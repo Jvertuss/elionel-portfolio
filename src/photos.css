@@ -1,0 +1,776 @@
+﻿/* =========================================================
+   Photos — additive styles (loaded after styles.css)
+   ========================================================= */
+
+/* ---------- home menu: panel art + orb photo ---------- */
+.panel-art {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: .34;
+    z-index: -1;
+    pointer-events: none;
+    user-select: none;
+    will-change: transform; /* own compositor layer, so hover animations don't re-paint the photo */
+}
+
+.panel-about .panel-art {
+    left: auto;
+    right: 0;
+    width: 46%;
+    opacity: .95;
+}
+
+.orb-face {
+    isolation: isolate;
+}
+
+.orb-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: .95;
+    pointer-events: none;
+    user-select: none;
+    will-change: transform;
+}
+
+.orb-face.has-photo .orb-icon {
+    display: none;
+}
+
+.orb-face.has-photo::before {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 32%, rgba(0, 0, 0, .84) 70%), radial-gradient(circle at 50% 50%, transparent 55%, rgba(0, 0, 0, .45));
+}
+
+.orb-face.has-photo {
+    justify-content: flex-end;
+    padding-bottom: 12%;
+}
+
+/* ---------- About: side-quest photo ---------- */
+.quest-photo {
+    margin: -1.1rem -1.2rem .9rem;
+    height: 9.5rem;
+    overflow: hidden;
+    border-bottom: .25rem solid var(--t2);
+}
+
+    .quest-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+/* ---------- About: photo gallery ---------- */
+.gallery {
+    margin-top: 1.1rem;
+}
+
+.gallery-grid {
+    list-style: none;
+    display: grid;
+    gap: 1rem;
+    grid-auto-flow: dense;
+    grid-auto-rows: 18rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.gallery-item {
+    min-width: 0;
+}
+
+    .gallery-item.is-wide {
+        grid-column: span 2;
+    }
+
+    .gallery-item button {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        overflow: hidden;
+        cursor: zoom-in;
+        border: .22rem solid var(--t2);
+        background: #0b1424;
+        transform: skewX(-2deg);
+        transition: transform .16s ease-out, box-shadow .16s ease-out;
+        outline: none;
+    }
+
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transform: skewX(2deg) scale(1.08);
+        transition: transform .25s ease-out;
+    }
+
+    .gallery-item button:hover, .gallery-item button:focus-visible {
+        transform: skewX(-2deg) translateY(-.25rem);
+        box-shadow: 0 0 0 .2rem #fff, 0 .9rem 1.4rem rgba(0, 0, 0, .55);
+        z-index: 2;
+    }
+
+        .gallery-item button:hover img, .gallery-item button:focus-visible img {
+            transform: skewX(2deg) scale(1.14);
+        }
+
+    .gallery-item button:focus-visible {
+        outline: .28rem solid #ffe600;
+        outline-offset: .25rem;
+    }
+
+.gallery-cap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1.6rem .8rem .65rem;
+    text-align: left;
+    font-weight: 800;
+    font-size: .92rem;
+    line-height: 1.25;
+    color: #fff;
+    transform: skewX(2deg);
+    background: linear-gradient(0deg, rgba(0, 0, 0, .88), transparent);
+}
+
+    .gallery-cap small {
+        display: block;
+        width: fit-content;
+        margin-bottom: .3rem;
+        padding: .05rem .55rem;
+        background: var(--t2);
+        font: 900 .62rem var(--display);
+        letter-spacing: .14em;
+        text-transform: uppercase;
+    }
+
+/* ---------- photo viewer ---------- */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: grid;
+    place-items: center;
+    padding: 2.5rem 4.5rem;
+    background: rgba(2, 4, 9, .94);
+    animation: fade-in .18s ease-out;
+}
+
+    .lightbox figure {
+        margin: 0;
+        max-width: min(92vw, 64rem);
+        max-height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: .8rem;
+    }
+
+    .lightbox img {
+        max-width: 100%;
+        max-height: calc(100dvh - 9rem);
+        object-fit: contain;
+        display: block;
+        border: .25rem solid var(--t2, #fff);
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, .7);
+    }
+
+    .lightbox figcaption {
+        display: flex;
+        gap: 1rem;
+        align-items: baseline;
+        color: #e6ecfa;
+        font-size: 1rem;
+    }
+
+        .lightbox figcaption span {
+            color: #8b93a3;
+            font-size: .85rem;
+            letter-spacing: .1em;
+        }
+
+.lightbox-btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 3.2rem;
+    height: 3.2rem;
+    padding: 0;
+    font-size: 1.4rem;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, .6);
+    background: rgba(0, 0, 0, .65);
+    color: #fff;
+    transition: background .15s, transform .15s;
+}
+
+    .lightbox-btn:hover {
+        background: #1785f6;
+    }
+
+.lightbox-close {
+    top: 1rem;
+    right: 1rem;
+}
+
+.lightbox-prev {
+    left: 1rem;
+    top: 50%;
+    margin-top: -1.6rem;
+}
+
+.lightbox-next {
+    right: 1rem;
+    top: 50%;
+    margin-top: -1.6rem;
+}
+
+/* ---------- shell + contact portraits ---------- */
+.shell-brand {
+    display: block;
+}
+
+.shell-avatar {
+    display: block;
+    width: 4.6rem;
+    height: 4.6rem;
+    margin-bottom: .8rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: .2rem solid #57b0ff;
+    box-shadow: 0 0 1.2rem rgba(23, 133, 246, .55);
+}
+
+.contact-head {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+}
+
+.contact-avatar {
+    flex: none;
+    width: 6.5rem;
+    height: 6.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: .25rem solid #57b0ff;
+    box-shadow: 0 0 1.6rem rgba(23, 133, 246, .55);
+}
+
+.contact-head h1 {
+    margin-bottom: 0;
+}
+
+/* ---------- experience: photo in preview + detail ---------- */
+.exp-photo {
+    margin: 1.2rem 0 0;
+    border: .18rem solid var(--t2);
+    background: #000;
+}
+
+    .exp-photo img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+    }
+
+    .exp-photo figcaption {
+        padding: .45rem .7rem;
+        font-size: .8rem;
+        letter-spacing: .04em;
+        color: #c6d2ec;
+        background: rgba(0, 0, 0, .55);
+    }
+
+.exp-hero-photo {
+    flex: none;
+    margin: 0 0 0 auto;
+    width: min(22rem, 36%);
+    border: .2rem solid rgba(255, 255, 255, .8);
+    background: #000;
+    transform: rotate(1.5deg);
+    box-shadow: 0 .8rem 1.6rem rgba(0, 0, 0, .45);
+}
+
+    .exp-hero-photo img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+    }
+
+    .exp-hero-photo figcaption {
+        padding: .4rem .6rem;
+        font-size: .78rem;
+        color: #dbe4f6;
+        background: rgba(0, 0, 0, .6);
+    }
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+    .shell-brand {
+        display: flex;
+        align-items: center;
+        gap: .7rem;
+    }
+
+    .shell-avatar {
+        width: 2.6rem;
+        height: 2.6rem;
+        margin: 0;
+    }
+
+    .shell-brand-text {
+        display: block;
+    }
+}
+
+@media (max-width: 900px) {
+    .gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 720px) {
+    .gallery-grid {
+        grid-auto-rows: 15rem;
+    }
+
+    .gallery-item.is-wide {
+        grid-column: span 2;
+    }
+
+    .lightbox {
+        padding: 3.6rem .8rem 1rem;
+    }
+
+        .lightbox img {
+            max-height: calc(100dvh - 11rem);
+        }
+
+    .lightbox-prev, .lightbox-next {
+        top: auto;
+        bottom: 1rem;
+        margin-top: 0;
+    }
+
+    .lightbox-prev {
+        left: calc(50% - 4rem);
+    }
+
+    .lightbox-next {
+        right: calc(50% - 4rem);
+    }
+
+    .contact-head {
+        gap: 1rem;
+    }
+
+    .contact-avatar {
+        width: 4.6rem;
+        height: 4.6rem;
+    }
+
+    .exp-hero-photo {
+        width: 100%;
+        margin: 0;
+        transform: none;
+    }
+
+    .panel-art {
+        opacity: .26;
+    }
+
+    .panel-about .panel-art {
+        width: 60%;
+        opacity: .7;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gallery-item button:hover, .gallery-item button:focus-visible {
+        transform: skewX(-2deg);
+    }
+
+        .gallery-item button:hover img, .gallery-item button:focus-visible img {
+            transform: skewX(2deg) scale(1.08);
+        }
+}
+
+/* Experience detail pages: bullet dots need a color (the page has no tone of its own) */
+.exp-detail .exp-bullets li::before {
+    background: #ffd426;
+}
+
+/* ---------- About: use the full width of the window (loaded after styles.css, so these win) ---------- */
+.about {
+    max-width: none;
+}
+
+.about-copy {
+    max-width: 82ch;
+}
+
+.gallery-grid {
+    grid-auto-rows: clamp(17rem, 21vw, 27rem);
+}
+
+@media (min-width: 1300px) {
+    .shell-main {
+        padding-inline: clamp(2rem, 3vw, 4.5rem);
+    }
+
+    .about-hero {
+        grid-template-columns: minmax(16rem, 25rem) minmax(0, 1fr);
+        gap: clamp(2.4rem, 4vw, 5rem);
+    }
+
+    .about-intro h1 {
+        font-size: clamp(4.5rem, 7vw, 8.5rem);
+    }
+
+    .about-role {
+        font-size: 1rem;
+    }
+
+    .about-copy {
+        font-size: clamp(1.1rem, 1.15vw, 1.35rem);
+        line-height: 1.75;
+    }
+
+    .about-actions {
+        margin-top: 1.6rem;
+    }
+
+    .about-cols {
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .card-dark {
+        padding: 1.5rem 1.8rem 1.8rem;
+    }
+
+    .ribbon {
+        margin: -1.5rem 0 1.3rem -1.8rem;
+    }
+
+    .facts dd, .funfacts li {
+        font-size: 1.05rem;
+    }
+
+    .interests li {
+        font-size: 1rem;
+    }
+
+    .loadout, .quests, .gallery {
+        margin-bottom: 1.5rem;
+    }
+
+    .quest p {
+        font-size: 1rem;
+    }
+}
+
+/* =========================================================
+   Project pages: covers, links, key numbers, tables, figures
+   ========================================================= */
+
+/* project card: photo instead of the big icon */
+.card-art {
+    position: relative;
+}
+
+.card-cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.card-art:has(.card-cover)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, .55));
+}
+
+.card-art:has(.card-cover) svg {
+    position: absolute;
+    left: .55rem;
+    bottom: .5rem;
+    z-index: 1;
+    width: 1.9rem;
+    height: 1.9rem;
+    padding: .35rem;
+    box-sizing: content-box;
+    border-radius: .4rem;
+    background: var(--t2);
+    stroke-width: 3.6;
+    filter: none;
+    transform: none !important;
+}
+
+/* links in the project hero */
+.detail-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+    margin-top: 1rem;
+}
+
+.detail-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+    padding: .6rem 1.1rem;
+    font-weight: 800;
+    color: #111;
+    background: #ffe600;
+    clip-path: polygon(4% 0, 100% 0, 96% 100%, 0 100%);
+    transition: transform .15s, background .15s;
+}
+
+    .detail-link:hover, .detail-link:focus-visible {
+        background: #fff;
+        transform: translateX(.2rem);
+    }
+
+    .detail-link:focus-visible {
+        outline: .22rem solid #fff;
+        outline-offset: .18rem;
+    }
+
+/* key-number tiles */
+.detail-stats {
+    list-style: none;
+    display: grid;
+    gap: .8rem;
+    margin: 0 2rem 1.3rem;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+}
+
+    .detail-stats li {
+        padding: .9rem 1.1rem;
+        background: #1a1a1f;
+        color: #fff;
+        border-left: .35rem solid var(--t2);
+        box-shadow: 0 .25rem .7rem rgba(60, 45, 20, .25);
+    }
+
+    .detail-stats strong {
+        display: block;
+        font: 900 clamp(1.5rem, 2.6vw, 2.1rem) / 1.05 var(--display);
+        color: var(--t1);
+        overflow-wrap: anywhere;
+    }
+
+    .detail-stats span {
+        display: block;
+        margin-top: .3rem;
+        font-size: .8rem;
+        letter-spacing: .04em;
+        color: #c6cbd6;
+    }
+
+/* results / cost tables */
+.table-wrap {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    min-width: 34rem;
+    border-collapse: collapse;
+    font-size: .95rem;
+}
+
+    .data-table th, .data-table td {
+        padding: .6rem .8rem;
+        text-align: left;
+        border-bottom: 1px solid #cdbf9c;
+        vertical-align: top;
+    }
+
+    .data-table thead th {
+        font: 900 .72rem var(--display);
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        color: #fff;
+        background: #1a1a1f;
+        border-bottom: 0;
+    }
+
+    .data-table tbody th {
+        font-weight: 800;
+    }
+
+    .data-table tbody tr:nth-child(even) {
+        background: rgba(109, 90, 55, .08);
+    }
+
+    .data-table tr.is-total th, .data-table tr.is-total td {
+        font-weight: 900;
+        background: rgba(255, 230, 0, .35);
+        border-bottom: 0;
+    }
+
+.table-note {
+    margin: .8rem 0 0 !important;
+    font-size: .82rem;
+    color: #5a4f38;
+    line-height: 1.5 !important;
+}
+
+/* figures */
+.figure-grid {
+    list-style: none;
+    display: grid !important;
+    gap: 1rem !important;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+}
+
+    .figure-grid li {
+        padding-left: 0 !important;
+    }
+
+        .figure-grid li::before {
+            display: none !important;
+        }
+
+    .figure-grid figure {
+        margin: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background: #14171e;
+        border: 1px solid #6d5a37;
+    }
+
+    .figure-grid a {
+        display: block;
+        overflow: hidden;
+        background: #000;
+    }
+
+    .figure-grid img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        transition: transform .25s ease-out;
+    }
+
+    .figure-grid a:hover img, .figure-grid a:focus-visible img {
+        transform: scale(1.04);
+    }
+
+    .figure-grid a:focus-visible {
+        outline: .25rem solid #ffe600;
+        outline-offset: -.25rem;
+    }
+
+    .figure-grid li.is-wide {
+        grid-column: 1 / -1;
+    }
+
+        .figure-grid li.is-wide img {
+            aspect-ratio: auto;
+            max-height: 34rem;
+            object-fit: contain;
+            background: #0b1424;
+        }
+
+    .figure-grid figcaption {
+        padding: .6rem .8rem;
+        font-size: .82rem;
+        line-height: 1.4;
+        color: #e6ecfa;
+    }
+
+@media (max-width: 720px) {
+    .detail-stats {
+        margin-inline: 1rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .figure-grid a:hover img, .figure-grid a:focus-visible img {
+        transform: none;
+    }
+}
+
+/* Project overview: use the width on big screens (two text columns) */
+@media (min-width: 1100px) {
+    .detail-grid > .sheet-wide:first-child {
+        column-count: 2;
+        column-gap: 3.5rem;
+    }
+
+        .detail-grid > .sheet-wide:first-child h2 {
+            column-span: all;
+        }
+
+        .detail-grid > .sheet-wide:first-child p {
+            max-width: none;
+            break-inside: avoid;
+            font-size: 1.04rem;
+        }
+}
+
+/* Project detail: main column (what I did) next to a side column (status, tools) on wider screens */
+.detail-cols {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: 1.1rem;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+}
+
+.detail-main, .detail-side {
+    display: grid;
+    gap: 1.1rem;
+    align-content: start;
+    min-width: 0;
+}
+
+@media (min-width: 1000px) {
+    .detail-cols {
+        grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+    }
+}
+
+/* Project board: keep the dark footer at the bottom of the page, even when only a few cards are showing */
+.board {
+    display: flex;
+    flex-direction: column;
+}
+
+.board-foot {
+    margin-top: auto;
+}
+
+.board-grid {
+    margin-bottom: 1.2rem;
+}
+
+@media (min-width: 1500px) {
+    .board-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+}
