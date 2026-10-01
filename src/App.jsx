@@ -2,8 +2,11 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRoute, navigate } from './router.js'
 import { EXPERIENCES } from './data.js'
 import { PROJECTS } from './projects.js'
+import { useIsMobile } from './useIsMobile.js'
+import './mobile.css'
 import MusicPlayer from './components/MusicPlayer.jsx'
 import Home from './pages/Home.jsx'
+import MobileHome from './pages/MobileHome.jsx'
 import Title from './pages/Title.jsx'
 import ProjectsPage, { ProjectDetail } from './pages/Projects.jsx'
 import ExperiencePage, { ExperienceDetail } from './pages/Experience.jsx'
@@ -48,6 +51,7 @@ function backTarget(route) {
 
 export default function App() {
     const route = useRoute()
+    const isMobile = useIsMobile()
     const mainRef = useRef(null)
     const musicRef = useRef(null)
     const firstRender = useRef(true)
@@ -106,10 +110,11 @@ export default function App() {
         case 'about': page = <AboutPage />; break
         case 'contact': page = <ContactPage />; break
         case 'full': page = <FullPortfolio />; break
-        default: page = <Home />
+        default: page = isMobile ? <MobileHome /> : <Home />
     }
 
     const isHome = route.name === 'home'
+    const backHref = backTarget(route)
 
     return (
         <>
@@ -119,7 +124,13 @@ export default function App() {
             <div id="main" ref={mainRef} tabIndex={-1} className="screen-root" key={`${route.name}/${route.id || ''}`} data-screen={route.name}>
                 {page}
             </div>
-            <div ref={musicRef}><MusicPlayer home={isHome} /></div>
+            {isMobile && backHref && !titleOpen && (
+                <a className="mk-back" href={backHref} aria-label="Back">
+                    <svg viewBox="0 0 64 64" width="100" height="100" aria-hidden="true"><path d="M52 32H14M28 16 12 32l16 16" /></svg>
+                    <span>BACK</span>
+                </a>
+            )}
+            <div ref={musicRef}><MusicPlayer home={isHome && !isMobile} /></div>
             {titleOpen && <Title onDone={finishTitle} />}
         </>
     )
